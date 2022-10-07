@@ -1,5 +1,8 @@
 #include <iostream>
 #include <cstdlib>
+#include "MatlabEngine.hpp"
+#include "MatlabDataArray.hpp"
+
 
 // Import C++ name mangled functions.
 __declspec(dllimport) void ivocmain_session(int, const char**, 
@@ -12,13 +15,26 @@ extern "C" __declspec(dllimport) void* hoc_lookup(const char*);
 extern "C" __declspec(dllimport) double hoc_call_func(void*, int);
 extern "C" __declspec(dllimport) void hoc_pushx(double);
 extern "C" __declspec(dllimport) int nrn_main_launch;
+extern "C" __declspec(dllimport) int nrn_is_python_extension;
 extern "C" __declspec(dllimport) int nrn_nobanner_;
 
 // Define invocmain_session input.
 static const char* argv[] = {"nrn_test", "-nogui", NULL};
 
+// Pointer to MATLAB engine.
+std::shared_ptr<matlab::engine::MATLABEngine> matlabPtr = NULL;
+
+// Factory to create MATLAB data arrays
+matlab::data::ArrayFactory factory;
+
 // Initialize NEURON session.
 void initialize(){
+
+    // Connect to MATLAB engine.
+    matlabPtr = matlab::engine::connectMATLAB(u"neuron");
+    matlabPtr->feval(u"fprintf", 0,
+        std::vector<matlab::data::Array>({ factory.createScalar("Test123\n") }));
+
     // Redirect stdout/sterr output to file, because MATLAB cannot handle 
     // it directly. Maybe we can use GetStdHandle instead?
     freopen("stdout.txt", "w", stdout);

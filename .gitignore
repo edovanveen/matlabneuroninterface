@@ -3,8 +3,7 @@
 
 # clibgen generated files
 neuronData.xml
-defineneuron.m
-defineneuron.mlx
+defineneuron.*
 
 # nrnmatlab generated files
 stderr.txt

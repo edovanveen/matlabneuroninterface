@@ -2,6 +2,7 @@
 % Initialize a neuron session and call some functions.
 
 % Initialization.
+matlab.engine.shareEngine("neuron");
 clib.neuron.initialize();
 
 % Run HOC code.
@@ -14,5 +15,5 @@ clib.neuron.fadvance();
 clib.neuron.close();
 
 % Show results.
-fprintf(1, '%s\n', fileread('stdout.txt'));
-fprintf(2, '%s\n', fileread('stderr.txt'));
+% fprintf(1, '%s\n', fileread('stdout.txt'));
+% fprintf(2, '%s\n', fileread('stderr.txt'));
