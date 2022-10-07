@@ -31,7 +31,7 @@ matlab::data::ArrayFactory factory;
 void initialize(){
 
     // Connect to MATLAB engine.
-    matlabPtr = matlab::engine::connectMATLAB(u"neuron");
+    matlabPtr = matlab::engine::connectMATLAB();
     matlabPtr->feval(u"fprintf", 0,
         std::vector<matlab::data::Array>({ factory.createScalar("Test123\n") }));
 
