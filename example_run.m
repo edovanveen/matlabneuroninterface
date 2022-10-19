@@ -2,9 +2,6 @@
 % Initialize a neuron session and call some functions.
 
 % Initialization.
-if matlab.engine.isEngineShared == 0
-    matlab.engine.shareEngine();
-end
 clib.neuron.initialize();
 
 % Run HOC code.

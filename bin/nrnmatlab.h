@@ -1,8 +1,10 @@
 #include <iostream>
 #include <cstdlib>
-#include "MatlabEngine.hpp"
-#include "MatlabDataArray.hpp"
 
+// Declare mexPrintf
+// Because cannot include mex.h with clib, because during build will give
+// "error Using MATLAB Data API with C Matrix API is not supported."
+extern "C" int mexPrintf(const char *message, ...);
 
 // Import C++ name mangled functions.
 __declspec(dllimport) void ivocmain_session(int, const char**, 
@@ -21,19 +23,10 @@ extern "C" __declspec(dllimport) int nrn_nobanner_;
 // Define invocmain_session input.
 static const char* argv[] = {"nrn_test", "-nogui", NULL};
 
-// Pointer to MATLAB engine.
-std::shared_ptr<matlab::engine::MATLABEngine> matlabPtr = NULL;
-
-// Factory to create MATLAB data arrays
-matlab::data::ArrayFactory factory;
-
 // Initialize NEURON session.
 void initialize(){
 
-    // Connect to MATLAB engine.
-    matlabPtr = matlab::engine::connectMATLAB();
-    matlabPtr->feval(u"fprintf", 0,
-        std::vector<matlab::data::Array>({ factory.createScalar("Test123\n") }));
+    mexPrintf("initialize\n");
 
     // Redirect stdout/sterr output to file, because MATLAB cannot handle 
     // it directly. Maybe we can use GetStdHandle instead?
@@ -49,6 +42,8 @@ void initialize(){
 // Call a few hoc functions.
 void hoc_run(double finitialize_val){
     // Run HOC code.
+    mexPrintf("hoc_run\n");
+
     hoc_oc("create soma\n");
     hoc_call_func(hoc_lookup("topology"), 0);
     hoc_pushx(finitialize_val);
@@ -59,6 +54,8 @@ void hoc_run(double finitialize_val){
 
 // Run simulation.
 void fadvance(){
+    mexPrintf("fadvance\n");
+
     nrnmpi_stubs();
     hoc_call_func(hoc_lookup("fadvance"), 0);
     std::cout << "time and voltage:" << std::endl;
