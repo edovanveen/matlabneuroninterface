@@ -3,20 +3,41 @@
 function setup()
 
     % User setting:
-    NeuronInstallationDirectory = 'C:\nrn';
-    
-    % Check if NEURON directory is correct.
-    filename = fullfile(NeuronInstallationDirectory, 'bin', 'libnrniv.dll');
-    assert(exist(filename, 'file') == 2, 'NEURON directory not found.');
-    
-    % All dependencies of the generated interface library must be findable.
-    % WINDOWS: Put them on the PATH
-    dllpath = fullfile(NeuronInstallationDirectory, 'bin');
-    syspath = getenv('PATH'); 
-    if ~contains(string(syspath), string(dllpath)+pathsep)
-        setenv('PATH', [dllpath pathsep syspath]);
+    if ismac
+        disp('Mac not Supported ... yet');
+    elseif isunix
+%         Here just check if it is in LD_LIBRARY_PATH, you can't set it on
+%         runtime in matlab.
+        NeuronInstallationDirectory = '/home/kian.ohara/.conda/envs/neuron';
+        % Check if NEURON directory is correct.
+        filename = fullfile(NeuronInstallationDirectory, 'bin', 'nrniv');
+%     
+        assert(exist(filename, 'file') == 2, 'Linux needs to be started from a shell where the neuron binary (nrniv) declared in the LD_LIBRARY_PATH');
+%         % All dependencies of the generated interface library must be findable.
+%         % LINUX: Put them on the PATH
+        dllpath = fullfile(NeuronInstallationDirectory, 'bin');
+        syspath = getenv('LD_LIBRARY_PATH'); 
+        if ~contains(string(syspath), string(dllpath)+pathsep)
+            setenv('LD_LIBRARY_PATH', [dllpath pathsep syspath]);
+        end
+    elseif ispc
+        NeuronInstallationDirectory = 'C:\nrn';
+
+        % Check if NEURON directory is correct.
+        filename = fullfile(NeuronInstallationDirectory, 'bin', 'libnrniv.dll');
+        
+        assert(exist(filename, 'file') == 2, 'NEURON directory not found.');
+        % All dependencies of the generated interface library must be findable.
+        % WINDOWS: Put them on the PATH
+        dllpath = fullfile(NeuronInstallationDirectory, 'bin');
+        syspath = getenv('PATH'); 
+        if ~contains(string(syspath), string(dllpath)+pathsep)
+            setenv('PATH', [dllpath pathsep syspath]);
+        end
+    else
+        disp('This platform not supported ... yet');
     end
-    
+
     % Path to the current directory.
     mlnrnpath = fileparts(mfilename('fullpath'));
     addpath(mlnrnpath);

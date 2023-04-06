@@ -18,7 +18,11 @@ function build_interface()
     HeaderFilePath = "source/nrnmatlab.h";
     SourceFilePath = "source/nrnmatlab.cpp";
     StaticLibPath = "source/libnrniv.a";
-    LibMexPath = fullfile(matlabroot, "extern", "lib", "win64", "mingw64", "libmex.lib"); % For mexPrintf
+    if ispc
+        LibMexPath = fullfile(matlabroot, "extern", "lib", "win64", "mingw64", "libmex.lib"); % For mexPrintf
+    elseif isunix
+        LibMexPath = fullfile(matlabroot, "bin", "glnxa64", "libmex.so"); % For mexPrintf
+    end
     HeadersIncludePath = "source";
     try
         clibgen.generateLibraryDefinition(HeaderFilePath, ...
