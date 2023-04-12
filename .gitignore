@@ -9,3 +9,5 @@ defineneuron.mlx
 # nrnmatlab generated files
 stderr.txt
 stdout.txt
+matlabneuroninterface.code-workspace
+.gitignore

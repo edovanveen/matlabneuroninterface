@@ -8,7 +8,7 @@ function setup()
     elseif isunix
 %         Here just check if it is in LD_LIBRARY_PATH, you can't set it on
 %         runtime in matlab.
-        NeuronInstallationDirectory = '/home/kian.ohara/.conda/envs/neuron';
+        NeuronInstallationDirectory = '/home/kian.ohara/.conda/envs/neuron/';
         % Check if NEURON directory is correct.
         filename = fullfile(NeuronInstallationDirectory, 'bin', 'nrniv');
 %     

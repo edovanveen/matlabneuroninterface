@@ -40,7 +40,7 @@ void initialize(){
         // Redirect stdout/sterr output to MATLAB.
         nrn_is_python_extension = 1;
         nrnpy_set_pr_etal(mlprint, NULL);
-    
+
         // Initialize NEURON session.
         if (nrnmpi_stubs) {
             nrnmpi_stubs();
@@ -62,8 +62,8 @@ bool isinitialized() {
 std::string str_symbol_table(Symlist* table) {
     std::string tabstr, new_tabstr;
     for (Symbol* sp = table->first; sp != NULL; sp = sp->next) {
-        new_tabstr = std::string(sp->name) + ":" + 
-                     std::to_string(sp->type) + "-" + 
+        new_tabstr = std::string(sp->name) + ":" +
+                     std::to_string(sp->type) + "-" +
                      std::to_string(sp->subtype) + ";";
         tabstr = tabstr + new_tabstr;
     }
@@ -72,7 +72,7 @@ std::string str_symbol_table(Symlist* table) {
 
 // Return all top-level functions.
 std::string get_nrn_functions() {
-    return str_symbol_table(hoc_built_in_symlist) + 
+    return str_symbol_table(hoc_built_in_symlist) +
         str_symbol_table(hoc_top_level_symlist);
 }
 
@@ -112,14 +112,14 @@ void matlab_hoc_pushpx(NrnRef* nrnref) {
 }
 void matlab_hoc_pushstr(const char* strin) {
     // TODO: By using a static char* here, we can only ever have one string
-    // on the stack, which is enough for our current example scripts. 
-    // However, adding a second string changes the first one. Maybe this 
+    // on the stack, which is enough for our current example scripts.
+    // However, adding a second string changes the first one. Maybe this
     // can be fixed in the future by using something like:
     //      char** ts = hoc_temp_charptr();
     //      *ts = strin.c_str();
     //      hoc_pushstr(ts);
     // However, then we need to keep track of ts and free it later to
-    // prevent a memory leak. Moreover, hoc_temp_charptr can only hold 128 
+    // prevent a memory leak. Moreover, hoc_temp_charptr can only hold 128
     // items.
     static char* cptr = new char[strlen(strin)];
     strcpy(cptr, strin);
@@ -148,7 +148,7 @@ Section* new_section(const char* name) {
     symbol->name = name_ptr;
     symbol->type = 1;
     symbol->type = 308;
-    symbol->arayinfo = 0;    
+    symbol->arayinfo = 0;
     hoc_install_object_data_index(symbol);
     hoc_top_level_data[symbol->u.oboff].psecitm = pitm;
     new_sections(nullptr, symbol, pitm, 1);

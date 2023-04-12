@@ -54,19 +54,19 @@
     extern "C" __declspec(dllimport) dptrvptr_function vector_vec;
 #else
     // Import C++ name mangled functions.
-    vv_function delete_section;
-    optrsptri_function hoc_newobj1;
-    initer_function ivocmain_session;
-    vsecptri_function mech_insert1;
-    voptrsptritemptrptri_function new_sections;
-    dptrsecptrsptrd_function nrn_rangepointer;
-    vsecptri_function nrn_change_nseg;
-    vsecptrd_function nrn_length_change;
-    vv_function nrnmpi_stubs;
-    secptrv_function nrn_sec_pop;
-    cptrsecptr_function secname;
-    vsecptr_function section_unref;
-    vv_function simpleconnectsection;
+    extern vv_function delete_section;
+    extern optrsptri_function hoc_newobj1;
+    extern initer_function ivocmain_session;
+    extern vsecptri_function mech_insert1;
+    extern voptrsptritemptrptri_function new_sections;
+    extern dptrsecptrsptrd_function nrn_rangepointer;
+    extern vsecptri_function nrn_change_nseg;
+    extern vsecptrd_function nrn_length_change;
+    extern vv_function nrnmpi_stubs;
+    extern secptrv_function nrn_sec_pop;
+    extern cptrsecptr_function secname;
+    extern vsecptr_function section_unref;
+    extern vv_function simpleconnectsection;
 
     // Import non-name mangled functions and parameters.
     extern "C" void modl_reg(){};
