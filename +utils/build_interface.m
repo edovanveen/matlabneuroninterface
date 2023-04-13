@@ -15,9 +15,12 @@ function build_interface()
     end
 
     % Create definition file for NEURON library.
+    % TODO: use full paths here
     HeaderFilePath = "source/nrnmatlab.h";
     SourceFilePath = "source/nrnmatlab.cpp";
     StaticLibPath = "/home/kian.ohara/.conda/envs/neuron/lib/python3.11/site-packages/neuron/.data/lib/libnrniv.so";
+    % TODO: use single source for NeuronInstallationDirectory, so only need to set it once
+    assert(exist(StaticLibPath, 'file') == 2, 'Update libpath in build_interface');
     if ispc
         LibMexPath = fullfile(matlabroot, "extern", "lib", "win64", "mingw64", "libmex.lib"); % For mexPrintf
     elseif isunix

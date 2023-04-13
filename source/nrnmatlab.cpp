@@ -40,6 +40,9 @@ void initialize(){
         // Redirect stdout/sterr output to MATLAB.
         nrn_is_python_extension = 1;
         nrnpy_set_pr_etal(mlprint, NULL);
+        // TODO: Can we indeed turn this off after calling nrnpy_set_pr_etal?
+        // Looks like printing to cmd still works, and avoids error messages about python library on linux
+        nrn_is_python_extension = 0;
 
         // Initialize NEURON session.
         if (nrnmpi_stubs) {

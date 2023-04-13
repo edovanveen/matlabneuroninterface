@@ -9,17 +9,20 @@ function setup()
 %         Here just check if it is in LD_LIBRARY_PATH, you can't set it on
 %         runtime in matlab.
         NeuronInstallationDirectory = '/home/kian.ohara/.conda/envs/neuron/';
-        % Check if NEURON directory is correct.
+        % Check if NEURON directory is correct, look for nrniv executable
         filename = fullfile(NeuronInstallationDirectory, 'bin', 'nrniv');
 %     
-        assert(exist(filename, 'file') == 2, 'Linux needs to be started from a shell where the neuron binary (nrniv) declared in the LD_LIBRARY_PATH');
+        assert(exist(filename, 'file') == 2, 'NeuronInstallationDirectory set in setup.m does not contain nrniv')
 %         % All dependencies of the generated interface library must be findable.
 %         % LINUX: Put them on the PATH
-        dllpath = fullfile(NeuronInstallationDirectory, 'bin');
+        dllpath = fullfile(NeuronInstallationDirectory, 'lib');
         syspath = getenv('LD_LIBRARY_PATH'); 
-        if ~contains(string(syspath), string(dllpath)+pathsep)
-            setenv('LD_LIBRARY_PATH', [dllpath pathsep syspath]);
-        end
+        % TODO: when at the end, does not have to have a pathsep. And a
+        % filesep after the last directory is also optional. So that gives
+        % multiple variants
+        assert(contains(string(syspath), string(dllpath)), ...
+            ... % TODO: improve this message
+            'Linux needs to be started from a shell where the directory containing neuron nrniv.so is declared in the LD_LIBRARY_PATH');
     elseif ispc
         NeuronInstallationDirectory = 'C:\nrn';
 
@@ -31,6 +34,9 @@ function setup()
         % WINDOWS: Put them on the PATH
         dllpath = fullfile(NeuronInstallationDirectory, 'bin');
         syspath = getenv('PATH'); 
+        % TODO: when at the end, does not have to have a pathsep. And a
+        % filesep after the last directory is also optional. So that gives
+        % multiple variants
         if ~contains(string(syspath), string(dllpath)+pathsep)
             setenv('PATH', [dllpath pathsep syspath]);
         end
